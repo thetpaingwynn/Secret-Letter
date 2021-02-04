@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
+  material_design_icons_flutter: ^4.0.5655
 
   get_it: ^4.0.2
   injectable: ^1.0.4

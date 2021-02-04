@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
@@ -13,15 +14,16 @@ abstract class _HomePageStoreBase with Store {
       "+CrRWyZRv7oUKIDx/QNIIJnmCti3f1BD0YgshkSFX3uT7AQduxbkcZUvrCeXHcYWGRYoS1jLL4IdpiXBuemcQwbocE+oH6yvwvwWRIbzzNsMQI4T7VKV9Q6F/vH+OYZVxp2S20ZDWtfv3bQIvZynKef5ezMZyNlAsFZEdmVJAck=";
 
   @observable
-  String input;
+  String input = '';
 
   @observable
-  String secretKey;
+  String secretKey = '';
 
   @observable
-  String output;
+  String output = '';
 
   void encrypt() async {
+    if (secretKey.isEmpty || input.isEmpty) return;
     final key = await cryptor.generateKeyFromPassword(secretKey, _salt);
     final encrypted = await cryptor.encrypt(input, key);
     //
@@ -29,9 +31,32 @@ abstract class _HomePageStoreBase with Store {
   }
 
   void decrypt() async {
-    final key = await cryptor.generateKeyFromPassword(secretKey, _salt);
-    final encrypted = await cryptor.decrypt(input, key);
-    //
-    output = encrypted;
+    try {
+      if (secretKey.isEmpty || input.isEmpty) return;
+      final key = await cryptor.generateKeyFromPassword(secretKey, _salt);
+      output = await cryptor.decrypt(input, key);
+    } catch (e) {
+      output = '';
+    }
+  }
+
+  Future<bool> copyMessageToClipboard() async {
+    if (input.isEmpty) return false;
+
+    await Clipboard.setData(ClipboardData(text: input));
+    return true;
+  }
+
+  Future<bool> pasteMessageFromClipboard() async {
+    var data = await Clipboard.getData('text/plain');
+    input = data.text;
+    return input.isNotEmpty;
+  }
+
+  Future<bool> copyOutputMessageToClipboard() async {
+    if (output.isEmpty) return false;
+
+    await Clipboard.setData(ClipboardData(text: output));
+    return true;
   }
 }
