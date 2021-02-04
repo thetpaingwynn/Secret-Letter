@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.plist": "xml"
+  },
+  "files.exclude": {
+    "**/*.g.dart": {
+      "when": "$(basename).dart"
+    }
+  }
+}
