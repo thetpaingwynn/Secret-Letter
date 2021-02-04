@@ -30,5 +30,13 @@ dev_dependencies:
   mobx_codegen: ^1.1.0+2
   injectable_generator: ^1.0.4
 
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/launcher/app-icon-ios.png"
+  image_path_android: "assets/launcher/app-icon-android.png"
+  adaptive_icon_background: "assets/launcher/background.png"
+  adaptive_icon_foreground: "assets/launcher/icon-android-foreground.png"
+
 flutter:
   uses-material-design: true
